@@ -14,9 +14,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+       //去掉防止跨站伪造请求的配置
+        http.csrf().disable();
         //配置不需要登录验证
-        http.authorizeRequests()
-                .anyRequest().permitAll().and().logout().permitAll();
-    }
 
+        http.authorizeRequests()
+                .anyRequest().permitAll().and().logout().permitAll()
+        ;
+    }
 }

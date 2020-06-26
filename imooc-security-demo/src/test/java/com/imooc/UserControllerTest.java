@@ -123,5 +123,14 @@ public class UserControllerTest {
                 .andReturn().getResponse().getContentAsString();
     }
 
-
+    /**
+     * test delete a user
+     */
+    @Test
+    public void whenDelete() throws Exception {
+        String response = mockMvc.perform(MockMvcRequestBuilders.delete("/user/1").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        log.info("++++++ whenDelete++++++{}", response);
+    }
 }

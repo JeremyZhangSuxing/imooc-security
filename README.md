@@ -17,7 +17,7 @@
  1)pom配置  
        【<dependency>  
                 <groupId>org.springframework.boot</groupId>  
-                <artifactId>spring-boot-devtools</artifactId>  
+          u      <artifactId>spring-boot-devtools</artifactId>  
                 <scope>runtime</scope>  
                 <optional>true</optional>  
        </dependency> 】
@@ -36,6 +36,10 @@ FilterSecurityInterceptor 依赖BrowserSecurityConfig的配置
 15.local repository push to github , warning using SSH keys  
 steps:  
 1) choose 【import into version control 】--->【share...】 do not forget config your git information  
+
+16.spring BOOT restFul 默认的异常处理机制
+
+BasicErrorController 默认的错误处理的控制器 处理 /error的请求  对应两个 error 方法 ---> 看请求head里面是否带有 "text/html" 
  
       
        

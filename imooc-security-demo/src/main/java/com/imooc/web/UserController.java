@@ -3,6 +3,7 @@ package com.imooc.web;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.imooc.dto.User;
 import com.imooc.dto.UserCondition;
+import com.imooc.exception.UserNotExitException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -34,6 +35,7 @@ public class UserController {
                 new User("2", userCondition.getUserName(), "123456", new Date()),
                 new User());
         return users;
+
     }
 
     /**
@@ -43,18 +45,20 @@ public class UserController {
     @JsonView(User.UserDetailView.class)
     public User getUserInfo(@PathVariable(name = "id") String id) {
         log.info("++++++test getUserInfo+++++++++" + id);
-        return new User("1", "jeremy", "123456", new Date());
+//        return new User("1", "jeremy", "123456", new Date());
+        throw new UserNotExitException(id);
     }
+
 
     @PostMapping
     @JsonView(User.UserSimpleView.class)
-    public User createUserInfo(@Valid @RequestBody User user, BindingResult errors) {
-        if (errors.hasErrors()) {
-            errors.getAllErrors().forEach(error -> {
-                FieldError fieldError = (FieldError) error;
-                log.info("++++++test createUserInfo+++++++++print error[" + fieldError.getField() + "---" + fieldError.getDefaultMessage() + "]");
-            });
-        }
+    public User createUserInfo(@Valid @RequestBody User user) {
+//        if (errors.hasErrors()) {
+//            errors.getAllErrors().forEach(error -> {
+//                FieldError fieldError = (FieldError) error;
+//                log.info("++++++test createUserInfo+++++++++print error[" + fieldError.getField() + "---" + fieldError.getDefaultMessage() + "]");
+//            });
+//        }
         user.setId("1");
         log.info("++++++test createUserInfo+++++++++" + user.toString());
         return user;
@@ -72,5 +76,11 @@ public class UserController {
         user.setId("1");
         log.info("++++++test updateUserInfo+++++++++" + user.toString());
         return user;
+    }
+
+    @DeleteMapping(value = "/{id:\\d+}")
+    public String deleteUser(@PathVariable String id) {
+        log.info("++++++start deleteUser+++++++++" + id);
+        return id;
     }
 }
