@@ -6,21 +6,21 @@
 4.正则表达式 限定 @PathValue 类型  
 5.@JsonView的用法  
 6.自定义@Valid 注解 减少业务代码  bean不需要declare为 组件，spring会自动注入？？  
-7.request 从不透明和服务端发出时  反生error获取到的response不相同---》  原因:BasicErrorController 入参不同的不同实现逻辑  
-  1)browser----》model and view  
-  2)app（client）---》 json response  
+7.request 从不透明和服务端发出时  反生error获取到的response不相同--->  原因:BasicErrorController 入参不同的不同实现逻辑  
+  1)browser---->model and view  
+  2)app（client）---> json response  
 8.[spring boot中 restFul api 错误处理机制 自定义异常处理机制] 自定义exception 构建[ExceptionAdvise] 拦截异常给前端顶定制化返回信息和相关字段  
 9.使用bean 注入的方式将第三方的 filter组件加入到你的project中去  
   filter: problems [1]只能从http request/response 获取一部分信息  because filter是 j2ee 规范中定义的  
   interceptor：三个步骤完成一次请求的调用，自定义一个interceptor 观测执行流程且 抛出的exception 不可以吃掉  
   aop [@Around]的  
  1)pom配置  
-       <dependency>  
+       【<dependency>  
                 <groupId>org.springframework.boot</groupId>  
                 <artifactId>spring-boot-devtools</artifactId>  
                 <scope>runtime</scope>  
                 <optional>true</optional>  
-       </dependency>  
+       </dependency> 】
        
  2)compiler [abcd]配置  
  3)Crtl+Shilt+Alt+/  registry的两个配置 [whenRunning] [...edit]  
