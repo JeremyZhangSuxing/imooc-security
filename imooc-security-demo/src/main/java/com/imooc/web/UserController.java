@@ -3,7 +3,6 @@ package com.imooc.web;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.imooc.dto.User;
 import com.imooc.dto.UserCondition;
-import com.imooc.exception.UserNotExitException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -44,21 +43,15 @@ public class UserController {
     @GetMapping(value = "/{id:\\d+}")
     @JsonView(User.UserDetailView.class)
     public User getUserInfo(@PathVariable(name = "id") String id) {
-        log.info("++++++test getUserInfo+++++++++" + id);
-//        return new User("1", "jeremy", "123456", new Date());
-        throw new UserNotExitException(id);
+        log.info("++++++start test getUserInfo+++++++++" + id);
+        return new User("1", "jeremy", "123456", new Date());
+//        throw new UserNotExitException(id);
     }
 
 
     @PostMapping
     @JsonView(User.UserSimpleView.class)
     public User createUserInfo(@Valid @RequestBody User user) {
-//        if (errors.hasErrors()) {
-//            errors.getAllErrors().forEach(error -> {
-//                FieldError fieldError = (FieldError) error;
-//                log.info("++++++test createUserInfo+++++++++print error[" + fieldError.getField() + "---" + fieldError.getDefaultMessage() + "]");
-//            });
-//        }
         user.setId("1");
         log.info("++++++test createUserInfo+++++++++" + user.toString());
         return user;
