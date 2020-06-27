@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * @author zhang.suxing
@@ -29,8 +29,8 @@ public class WebConfig implements WebMvcConfigurer {
         FilterRegistrationBean<TimeFilter> filterRegistrationBean = new FilterRegistrationBean<>();
         TimeFilter timeFilter = new TimeFilter();
         filterRegistrationBean.setFilter(timeFilter);
-        //设置可过滤的url
-        filterRegistrationBean.setUrlPatterns(Arrays.asList("/*"));
+        //设置可过滤的url 不干扰其他测试设置为 /user
+        filterRegistrationBean.setUrlPatterns(Collections.singletonList("/user"));
         return filterRegistrationBean;
     }
 
@@ -45,6 +45,7 @@ public class WebConfig implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(timeInterceptor);
+
+//        registry.addInterceptor(timeInterceptor);  不影响后续测试 先注释
     }
 }
