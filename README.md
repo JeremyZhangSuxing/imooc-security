@@ -17,7 +17,7 @@
  1)pom配置  
        【<dependency>  
                 <groupId>org.springframework.boot</groupId>  
-          u      <artifactId>spring-boot-devtools</artifactId>  
+               <artifactId>spring-boot-devtools</artifactId>  
                 <scope>runtime</scope>  
                 <optional>true</optional>  
        </dependency> 】
@@ -40,6 +40,8 @@ steps:
 16.spring BOOT restFul 默认的异常处理机制
 
 BasicErrorController 默认的错误处理的控制器 处理 /error的请求  对应两个 error 方法 ---> 看请求head里面是否带有 "text/html" 
+
+17.api 的拦截顺序是 controller--->Aspect--->ControllerAdvise--->Interceptor--->Filter
  
       
        

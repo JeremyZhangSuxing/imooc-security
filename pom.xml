@@ -29,6 +29,10 @@
         <commons.lang.version>3.8.1</commons.lang.version>
         <commons.collections.version>4.1</commons.collections.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
+        <commons-io-version>2.7</commons-io-version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <!--spring 版本管理 -->
@@ -95,6 +99,11 @@
                 <version>${commons.collections.version}</version>
             </dependency>
             <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io-version}</version>
+            </dependency>
+            <dependency>
                 <groupId>commons-beanutils</groupId>
                 <artifactId>commons-beanutils</artifactId>
                 <version>${commons-beanutils.version}</version>
@@ -115,11 +124,11 @@
                 <!--</configuration>-->
             <!--</plugin>-->
             <plugin>
-                <groupId>org.springframework.cloud.boot</groupId>
+                <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <fork>true</fork>
-                    <addResource>true</addResource>
+                    <addResources>true</addResources>
                 </configuration>
             </plugin>
         </plugins>
