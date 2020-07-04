@@ -1,5 +1,7 @@
 package com.imooc.security.browser.config;
 
+import com.imooc.security.browser.authentication.ImoocAuthenticationFailureHandler;
+import com.imooc.security.browser.authentication.ImoocAuthenticationSuccessHandler;
 import com.imooc.security.core.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +20,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private SecurityProperties securityProperties;
+
+    @Autowired
+    private ImoocAuthenticationSuccessHandler imoocAuthenticationSuccessHandler;
+
+    @Autowired
+    private ImoocAuthenticationFailureHandler imoocAuthenticationFailureHandler;
 
     /**
      * 注入密码加密组件
@@ -40,6 +48,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/authentication/require")
                 //使用 UserNamePasswordAuthenticationFilter  来处理这个页面请求提交的用户信息
                 .loginProcessingUrl("/authentication/form")
+                //login 成功处理方式
+                .successHandler(imoocAuthenticationSuccessHandler)
+                //login 失败的处理方式
+                .failureHandler(imoocAuthenticationFailureHandler)
                 //设置页面的授权方式
                 .and()
                 .authorizeRequests()
