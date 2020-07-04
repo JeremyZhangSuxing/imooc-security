@@ -1,11 +1,14 @@
 package com.imooc.security.browser.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.imooc.security.core.LoginType;
+import com.imooc.security.core.properties.SecurityProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -20,10 +23,13 @@ import java.io.IOException;
  **/
 @Component
 @Slf4j
-public class ImoocAuthenticationFailureHandler implements AuthenticationFailureHandler {
+public class ImoocAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
     @Resource
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private SecurityProperties securityProperties;
 
     /**
      * 登陆失败异常信息返回放入response
@@ -31,8 +37,13 @@ public class ImoocAuthenticationFailureHandler implements AuthenticationFailureH
     @Override
     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
         log.info("======ImoocAuthenticationFailureHandler onAuthenticationFailure 登陆失败，异常信息 {}", e.getMessage());
-        httpServletResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        httpServletResponse.getWriter().write(objectMapper.writeValueAsString(e));
+        if (LoginType.JSON.equals(securityProperties.getBrowser().getLoginType())) {
+            httpServletResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            httpServletResponse.getWriter().write(objectMapper.writeValueAsString(e));
+        } else {
+            super.onAuthenticationFailure(httpServletRequest, httpServletResponse, e);
+        }
+
     }
 }

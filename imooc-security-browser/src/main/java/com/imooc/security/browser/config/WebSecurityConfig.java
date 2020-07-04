@@ -56,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 //不需权限认证
-                .antMatchers("/authentication/require", securityProperties.getBrowser().getLoginPage()).permitAll()
+                .antMatchers("/authentication/require", securityProperties.getBrowser().getLoginPage(),"/error").permitAll()
                 .anyRequest()
                 .authenticated()
                 //去掉跨站防护
