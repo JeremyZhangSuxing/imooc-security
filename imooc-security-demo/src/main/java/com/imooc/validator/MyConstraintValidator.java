@@ -1,4 +1,4 @@
-package validator;
+package com.imooc.validator;
 
 import com.imooc.service.HelloService;
 import lombok.extern.slf4j.Slf4j;

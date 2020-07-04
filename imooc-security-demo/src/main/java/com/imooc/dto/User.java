@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import validator.MyConstraint;
+import com.imooc.validator.MyConstraint;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;

@@ -42,6 +42,8 @@ steps:
 BasicErrorController 默认的错误处理的控制器 处理 /error的请求  对应两个 error 方法 ---> 看请求head里面是否带有 "text/html" 
 
 17.api 的拦截顺序是 controller--->Aspect--->ControllerAdvise--->Interceptor--->Filter
+
+18.
  
       
        

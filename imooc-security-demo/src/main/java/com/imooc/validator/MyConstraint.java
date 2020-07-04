@@ -1,4 +1,4 @@
-package validator;
+package com.imooc.validator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

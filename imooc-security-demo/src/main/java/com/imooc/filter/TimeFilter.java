@@ -1,5 +1,6 @@
 package com.imooc.filter;
 
+import com.imooc.config.WebConfig;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.*;
@@ -12,7 +13,7 @@ import java.io.IOException;
  * filter 不知道request 是哪个controller发起的 @
  * 本地的可直接注解引入
  * 第三方的filter 怎么加入 spring 的过滤器链
- * {@link com.imooc.config.WebConfig}
+ * {@link WebConfig}
  **/
 @Slf4j
 //@Component

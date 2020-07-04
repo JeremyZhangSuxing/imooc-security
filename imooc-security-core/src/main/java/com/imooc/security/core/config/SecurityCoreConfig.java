@@ -1,6 +1,6 @@
-package com.imooc.security.com.imooc.security.propertise.com.imooc.security.com.imooc.security.config;
+package com.imooc.security.core.config;
 
-import com.imooc.security.com.imooc.security.propertise.SecurityProperties;
+import com.imooc.security.core.properties.SecurityProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 

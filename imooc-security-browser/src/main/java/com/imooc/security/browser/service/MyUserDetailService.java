@@ -1,4 +1,4 @@
-package com.imooc.service;
+package com.imooc.security.browser.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +29,6 @@ public class MyUserDetailService implements UserDetailsService {
         //3.用户的密码是加密的 db中的是encode后的密码  多次加密会生成不同的盐 密码会不一样 但是反解析后结果相同，安全性大大提高
         String encode = passwordEncoder.encode(keys);
         log.info("======MyUserDetailService loadUserByUsername encode passWord {}", encode);
-        return new User(userName, keys, AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+        return new User(userName, encode, AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
     }
 }

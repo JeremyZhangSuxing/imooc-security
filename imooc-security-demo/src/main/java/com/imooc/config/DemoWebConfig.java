@@ -16,7 +16,7 @@ import java.util.Collections;
  * @date 2020/6/26 15:12
  **/
 @Configuration
-public class WebConfig implements WebMvcConfigurer {
+public class DemoWebConfig implements WebMvcConfigurer {
     @Autowired
     private TimeInterceptor timeInterceptor;
 
