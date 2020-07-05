@@ -1,4 +1,4 @@
-package com.imooc.security.core;
+package com.imooc.security.core.validate.enums;
 
 import lombok.Getter;
 

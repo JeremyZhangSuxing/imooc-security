@@ -5,15 +5,20 @@ import com.imooc.security.browser.authentication.ImoocAuthenticationSuccessHandl
 import com.imooc.security.core.properties.SecurityProperties;
 import com.imooc.security.core.validate.filter.ValidateFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import javax.servlet.ServletException;
+import javax.sql.DataSource;
 
 /**
  * @author zhang.suxing
@@ -31,15 +36,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     ImoocAuthenticationFailureHandler imoocAuthenticationFailureHandler;
 
+    @Autowired
+    private DataSource dataSource;
+
+    @Qualifier("myUserDetailService")
+    @Autowired
+    private UserDetailsService userDetailsService;
+
     @Bean
     public ValidateFilter validateFilter() throws ServletException {
         ValidateFilter validateFilter = new ValidateFilter();
         validateFilter.setAuthenticationFailureHandler(imoocAuthenticationFailureHandler);
         validateFilter.setSecurityProperties(securityProperties);
-//        validateFilter.afterPropertiesSet();
         return validateFilter;
     }
 
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+        jdbcTokenRepository.setDataSource(dataSource);
+        //启动时创建表
+        jdbcTokenRepository.setCreateTableOnStartup(true);
+        return jdbcTokenRepository;
+    }
 
     /**
      * 注入密码加密组件
@@ -67,6 +86,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(imoocAuthenticationSuccessHandler)
                 //login 失败的处理方式
                 .failureHandler(imoocAuthenticationFailureHandler)
+                //记住我功能的配置
+                .and()
+                .rememberMe().tokenRepository(persistentTokenRepository())
+                .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
+                .userDetailsService(userDetailsService)
                 //设置页面的授权方式
                 .and()
                 .authorizeRequests()

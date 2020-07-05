@@ -43,7 +43,9 @@ BasicErrorController 默认的错误处理的控制器 处理 /error的请求  �
 
 17.api 的拦截顺序是 controller--->Aspect--->ControllerAdvise--->Interceptor--->Filter
 
-18.
+18.remember me 源码流程  AbstractAuthenticationProcessingFilter  rememberMeService  创建token写入db
+
+没有密码的时候 RememberMeAuthenticationFilter 97 是否有身份认证过 从请求的cookie里面拿 token与db的token 做验证 通过token登录
  
       
        

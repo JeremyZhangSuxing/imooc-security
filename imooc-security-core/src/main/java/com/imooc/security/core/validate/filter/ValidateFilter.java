@@ -1,6 +1,6 @@
 package com.imooc.security.core.validate.filter;
 
-import com.imooc.security.core.ValidateException;
+import com.imooc.security.core.exception.ValidateException;
 import com.imooc.security.core.controller.ValidateCodeController;
 import com.imooc.security.core.properties.SecurityProperties;
 import com.imooc.security.core.validate.dto.ImageCode;

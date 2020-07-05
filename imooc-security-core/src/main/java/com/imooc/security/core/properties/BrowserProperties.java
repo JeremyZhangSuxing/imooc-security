@@ -1,6 +1,6 @@
 package com.imooc.security.core.properties;
 
-import com.imooc.security.core.LoginType;
+import com.imooc.security.core.validate.enums.LoginType;
 import lombok.Data;
 
 /**
@@ -13,4 +13,6 @@ public class BrowserProperties {
     private String loginPage = "/imooc-sign.html";
 
     private LoginType loginType = LoginType.JSON;
+
+    private int rememberMeSeconds = 3600 * 24 * 14;
 }

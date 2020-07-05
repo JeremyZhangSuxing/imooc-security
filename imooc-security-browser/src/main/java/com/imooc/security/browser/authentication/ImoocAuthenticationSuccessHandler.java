@@ -1,7 +1,7 @@
 package com.imooc.security.browser.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.imooc.security.core.LoginType;
+import com.imooc.security.core.validate.enums.LoginType;
 import com.imooc.security.core.properties.SecurityProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
