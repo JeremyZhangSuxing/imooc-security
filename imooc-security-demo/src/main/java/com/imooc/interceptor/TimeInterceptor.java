@@ -1,6 +1,6 @@
 package com.imooc.interceptor;
 
-import com.imooc.config.WebConfig;
+import com.imooc.config.DemoWebConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ import java.util.Objects;
  * @author zhang.suxing
  * @date 2020/6/26 15:22
  * <p>
- * 只声明这个组件不起作用 需要额外的 配置 {@link WebConfig}
+ * 只声明这个组件不起作用 需要额外的 配置 {@link DemoWebConfig}
  * 会拦截所有的 controller 包括spring 自己的 example BasicErrorController
  *
  **/

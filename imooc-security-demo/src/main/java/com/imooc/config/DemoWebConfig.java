@@ -21,7 +21,7 @@ public class DemoWebConfig implements WebMvcConfigurer {
     private TimeInterceptor timeInterceptor;
 
     /**
-     * 将第三方的filter引如spring过滤期器
+     * 将第三方的filter引入spring过滤期器
      * 其他场景如要引入第三方插件 也可以使用bean的方式配置注入
      */
     @Bean

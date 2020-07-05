@@ -3,6 +3,7 @@ package com.imooc.security.browser.config;
 import com.imooc.security.browser.authentication.ImoocAuthenticationFailureHandler;
 import com.imooc.security.browser.authentication.ImoocAuthenticationSuccessHandler;
 import com.imooc.security.core.properties.SecurityProperties;
+import com.imooc.security.core.validate.filter.ValidateFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * @author zhang.suxing
@@ -27,6 +29,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private ImoocAuthenticationFailureHandler imoocAuthenticationFailureHandler;
 
+    @Bean
+    public ValidateFilter validateFilter() {
+        ValidateFilter validateFilter = new ValidateFilter();
+        validateFilter.setAuthenticationFailureHandler(imoocAuthenticationFailureHandler);
+        return validateFilter;
+    }
+
+
     /**
      * 注入密码加密组件
      *
@@ -42,8 +52,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        //TODO
-        http.formLogin()
+        //在密码验证之前 先validate验证码
+        http.addFilterBefore(validateFilter(), UsernamePasswordAuthenticationFilter.class)
+                .formLogin()
                 ///authentication/require  采用接口的方式来可配置化我们的登录
                 .loginPage("/authentication/require")
                 //使用 UserNamePasswordAuthenticationFilter  来处理这个页面请求提交的用户信息
@@ -56,7 +67,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 //不需权限认证
-                .antMatchers("/authentication/require", securityProperties.getBrowser().getLoginPage(),"/error").permitAll()
+                .antMatchers("/authentication/require",
+                        securityProperties.getBrowser().getLoginPage(),
+                        "/error",
+                        "/code/image").permitAll()
                 .anyRequest()
                 .authenticated()
                 //去掉跨站防护
