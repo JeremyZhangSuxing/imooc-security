@@ -13,6 +13,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.servlet.ServletException;
+
 /**
  * @author zhang.suxing
  * @date 2020/7/1 22:04
@@ -27,12 +29,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private ImoocAuthenticationSuccessHandler imoocAuthenticationSuccessHandler;
 
     @Autowired
-    private ImoocAuthenticationFailureHandler imoocAuthenticationFailureHandler;
+    ImoocAuthenticationFailureHandler imoocAuthenticationFailureHandler;
 
     @Bean
-    public ValidateFilter validateFilter() {
+    public ValidateFilter validateFilter() throws ServletException {
         ValidateFilter validateFilter = new ValidateFilter();
         validateFilter.setAuthenticationFailureHandler(imoocAuthenticationFailureHandler);
+        validateFilter.setSecurityProperties(securityProperties);
+//        validateFilter.afterPropertiesSet();
         return validateFilter;
     }
 
