@@ -62,6 +62,8 @@ public class BrowserSecurityController {
             }
         }
         return new SimpleResponse("请引导用户到等登陆页面");
-
     }
+
+
+
 }

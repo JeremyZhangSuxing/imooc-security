@@ -7,15 +7,11 @@ import lombok.Data;
  * @date 2020/7/5 17:25
  **/
 @Data
-public class ImageCodeProperties {
+public class ImageCodeProperties extends SmsCodeProperties {
 
     private int width = 67;
 
     private int height = 23;
-
-    private int length = 4;
-
-    private int expireTime= 60;
 
     private String url;
 }

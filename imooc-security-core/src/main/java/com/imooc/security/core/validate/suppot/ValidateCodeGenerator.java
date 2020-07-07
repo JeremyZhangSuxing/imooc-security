@@ -1,6 +1,6 @@
 package com.imooc.security.core.validate.suppot;
 
-import com.imooc.security.core.validate.dto.ImageCode;
+import com.imooc.security.core.validate.dto.ValidateCode;
 import org.springframework.web.context.request.ServletWebRequest;
 
 /**
@@ -11,8 +11,8 @@ public interface ValidateCodeGenerator {
 
     /**
      * 图片验证码
-     * @param request  sdaf
+     * @param request
      * @return
      */
-    ImageCode generate(ServletWebRequest request);
+    ValidateCode generate(ServletWebRequest request);
 }
