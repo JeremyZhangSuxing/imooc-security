@@ -1,7 +1,6 @@
 package com.imooc.security.core.validate.filter;
 
 import com.imooc.security.core.exception.ValidateException;
-import com.imooc.security.core.controller.ValidateCodeController;
 import com.imooc.security.core.properties.SecurityProperties;
 import com.imooc.security.core.validate.dto.ImageCode;
 import lombok.Data;
@@ -91,7 +90,7 @@ public class ValidateFilter extends OncePerRequestFilter implements Initializing
      */
     private void validate(ServletWebRequest servletWebRequest) throws ServletRequestBindingException {
         //生成验证码放入session的值
-        ImageCode codeInSession = (ImageCode) sessionStrategy.getAttribute(servletWebRequest, ValidateCodeController.SESSION_KEY);
+        ImageCode codeInSession = (ImageCode) sessionStrategy.getAttribute(servletWebRequest, "");
         //登陆页面用户输入的验证码
         String codeInRequest = ServletRequestUtils.getStringParameter(servletWebRequest.getRequest(), "imageCode");
 
@@ -103,13 +102,13 @@ public class ValidateFilter extends OncePerRequestFilter implements Initializing
             throw new ValidateException("验证码不存在，请重新获取");
         }
         if (codeInSession.isExpired()) {
-            sessionStrategy.removeAttribute(servletWebRequest, ValidateCodeController.SESSION_KEY);
+            sessionStrategy.removeAttribute(servletWebRequest, "");
             throw new ValidateException("当前验证码已过期，请重新获取");
         }
         if (!StringUtils.equalsIgnoreCase(codeInSession.getCode(), codeInRequest)) {
             throw new ValidateException("验证码校验失败");
         }
         //validate success 删除session中的验证码
-        sessionStrategy.removeAttribute(servletWebRequest, ValidateCodeController.SESSION_KEY);
+        sessionStrategy.removeAttribute(servletWebRequest, "");
     }
 }

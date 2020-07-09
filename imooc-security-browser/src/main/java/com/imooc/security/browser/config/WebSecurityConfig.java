@@ -98,7 +98,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/authentication/require",
                         securityProperties.getBrowser().getLoginPage(),
                         "/error",
-                        "/code/image").permitAll()
+                        "/code/*").permitAll()
                 .anyRequest()
                 .authenticated()
                 //去掉跨站防护

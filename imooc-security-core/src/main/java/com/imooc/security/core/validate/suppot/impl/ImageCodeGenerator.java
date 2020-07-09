@@ -5,6 +5,7 @@ import com.imooc.security.core.validate.dto.ImageCode;
 import com.imooc.security.core.validate.suppot.ValidateCodeGenerator;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
 
@@ -17,6 +18,7 @@ import java.util.Random;
  * @date 2020/7/5 21:10
  **/
 @Data
+@Component("imageCodeGenerator")
 public class ImageCodeGenerator implements ValidateCodeGenerator {
 
     @Autowired
