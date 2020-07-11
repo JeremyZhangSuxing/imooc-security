@@ -1,13 +1,17 @@
 package com.imooc.security.core.validate.processor.impl;
 
 import com.imooc.security.core.constants.SecurityConstants;
+import com.imooc.security.core.exception.ValidateException;
 import com.imooc.security.core.validate.dto.ValidateCode;
+import com.imooc.security.core.validate.enums.ValidateCodeType;
 import com.imooc.security.core.validate.processor.ValidateCodeProcessor;
 import com.imooc.security.core.validate.suppot.ValidateCodeGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
 import org.springframework.social.connect.web.SessionStrategy;
+import org.springframework.web.bind.ServletRequestBindingException;
+import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
 
 import java.util.Map;
@@ -54,7 +58,7 @@ public abstract class AbstractValidateProcessor<C extends ValidateCode> implemen
     /**
      * 保存code信息到session
      */
-    private void save(ServletWebRequest request, ValidateCode validateCode) {
+    private void save(ServletWebRequest request, C validateCode) {
         //request 信息放入session中，设置验证码属性
         sessionStrategy.setAttribute(request, SESSION_KEY_PREFIX, validateCode.getCode());
     }
@@ -75,4 +79,61 @@ public abstract class AbstractValidateProcessor<C extends ValidateCode> implemen
         return StringUtils.substringAfter(request.getRequest().getRequestURI(), "/code/");
     }
 
+    /**
+     * 通用校验验证码逻辑
+     *
+     * @param request 请求信息
+     * @throws Exception
+     */
+    @Override
+    public void validate(ServletWebRequest request){
+        ValidateCodeType processorType = getValidateCodeType(request);
+        String sessionKey = getSessionKey(request);
+
+        C codeInSession = (C) sessionStrategy.getAttribute(request, sessionKey);
+
+        String codeInRequest;
+        try {
+            codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(),
+                    processorType.getParamNameOnValidate());
+        } catch (ServletRequestBindingException e) {
+            throw new ValidateException("获取验证码的值失败");
+        }
+
+        if (StringUtils.isBlank(codeInRequest)) {
+            throw new ValidateException(processorType + "验证码的值不能为空");
+        }
+
+        if (codeInSession == null) {
+            throw new ValidateException(processorType + "验证码不存在");
+        }
+
+        if (codeInSession.isExpired()) {
+            sessionStrategy.removeAttribute(request, sessionKey);
+            throw new ValidateException(processorType + "验证码已过期");
+        }
+
+        if (!StringUtils.equals(codeInSession.getCode(), codeInRequest)) {
+            throw new ValidateException(processorType + "验证码不匹配");
+        }
+
+        sessionStrategy.removeAttribute(request, sessionKey);
+    }
+
+    /**
+     * 构建验证码放入session时的key
+     *
+     */
+    private String getSessionKey(ServletWebRequest request) {
+        return SESSION_KEY_PREFIX + getValidateCodeType(request).toString().toUpperCase();
+    }
+
+    /**
+     * 根据请求的url获取校验码的类型
+     *
+     */
+    private ValidateCodeType getValidateCodeType(ServletWebRequest request) {
+        String type = getProcessType(request);
+        return ValidateCodeType.valueOf(type.toUpperCase());
+    }
 }

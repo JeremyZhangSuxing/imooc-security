@@ -11,4 +11,6 @@ public class SmsCodeProperties {
     private int expireTime = 60;
 
     private int length = 4;
+
+    private String url = "/user/*,";
 }

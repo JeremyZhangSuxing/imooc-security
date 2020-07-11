@@ -25,6 +25,7 @@ public class ValidateCodeController {
 
     @GetMapping(SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/{type}")
     public void createCode(HttpServletRequest request, HttpServletResponse response, @PathVariable String type) throws Exception {
-        validateCodeProcessorMap.get(type + SecurityConstants.PROCESSOR_SUFFIX).create(new ServletWebRequest(request));
+        //request,response 一起传到后面去
+        validateCodeProcessorMap.get(type + SecurityConstants.PROCESSOR_SUFFIX).create(new ServletWebRequest(request,response));
     }
 }

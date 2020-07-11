@@ -1,23 +1,19 @@
 package com.imooc.security.browser.config;
 
-import com.imooc.security.browser.authentication.ImoocAuthenticationFailureHandler;
-import com.imooc.security.browser.authentication.ImoocAuthenticationSuccessHandler;
+import com.imooc.security.core.config.SmsCodeAuthenticationSecurityConfig;
+import com.imooc.security.core.config.ValidateCodeSecurityConfig;
 import com.imooc.security.core.properties.SecurityProperties;
-import com.imooc.security.core.validate.filter.ValidateFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
-import javax.servlet.ServletException;
 import javax.sql.DataSource;
 
 /**
@@ -25,16 +21,10 @@ import javax.sql.DataSource;
  * @date 2020/7/1 22:04
  **/
 @Configuration
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig extends AbstractChannelSecurityConfig {
 
     @Autowired
     private SecurityProperties securityProperties;
-
-    @Autowired
-    private ImoocAuthenticationSuccessHandler imoocAuthenticationSuccessHandler;
-
-    @Autowired
-    ImoocAuthenticationFailureHandler imoocAuthenticationFailureHandler;
 
     @Autowired
     private DataSource dataSource;
@@ -43,13 +33,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    @Bean
-    public ValidateFilter validateFilter() throws ServletException {
-        ValidateFilter validateFilter = new ValidateFilter();
-        validateFilter.setAuthenticationFailureHandler(imoocAuthenticationFailureHandler);
-        validateFilter.setSecurityProperties(securityProperties);
-        return validateFilter;
-    }
+    @Autowired
+    private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
+
+    @Autowired
+    private ValidateCodeSecurityConfig validateCodeSecurityConfig;
 
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {
@@ -75,18 +63,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        applyPasswordAuthenticationConfig(http);
         //在密码验证之前 先validate验证码
-        http.addFilterBefore(validateFilter(), UsernamePasswordAuthenticationFilter.class)
-                .formLogin()
-                ///authentication/require  采用接口的方式来可配置化我们的登录
-                .loginPage("/authentication/require")
-                //使用 UserNamePasswordAuthenticationFilter  来处理这个页面请求提交的用户信息
-                .loginProcessingUrl("/authentication/form")
-                //login 成功处理方式
-                .successHandler(imoocAuthenticationSuccessHandler)
-                //login 失败的处理方式
-                .failureHandler(imoocAuthenticationFailureHandler)
-                //记住我功能的配置
+        http.apply(validateCodeSecurityConfig)
+                .and()
+                .apply(smsCodeAuthenticationSecurityConfig)
                 .and()
                 .rememberMe().tokenRepository(persistentTokenRepository())
                 .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
