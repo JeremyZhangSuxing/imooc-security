@@ -86,7 +86,7 @@ public abstract class AbstractValidateProcessor<C extends ValidateCode> implemen
      * @throws Exception
      */
     @Override
-    public void validate(ServletWebRequest request){
+    public void validate(ServletWebRequest request) {
         ValidateCodeType processorType = getValidateCodeType(request);
         String sessionKey = getSessionKey(request);
 
@@ -122,7 +122,6 @@ public abstract class AbstractValidateProcessor<C extends ValidateCode> implemen
 
     /**
      * 构建验证码放入session时的key
-     *
      */
     private String getSessionKey(ServletWebRequest request) {
         return SESSION_KEY_PREFIX + getValidateCodeType(request).toString().toUpperCase();
@@ -130,7 +129,6 @@ public abstract class AbstractValidateProcessor<C extends ValidateCode> implemen
 
     /**
      * 根据请求的url获取校验码的类型
-     *
      */
     private ValidateCodeType getValidateCodeType(ServletWebRequest request) {
         String type = getProcessType(request);

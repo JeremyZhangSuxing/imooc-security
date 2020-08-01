@@ -46,6 +46,18 @@ BasicErrorController 默认的错误处理的控制器 处理 /error的请求  �
 18.remember me 源码流程  AbstractAuthenticationProcessingFilter  rememberMeService  创建token写入db
 
 没有密码的时候 RememberMeAuthenticationFilter 97 是否有身份认证过 从请求的cookie里面拿 token与db的token 做验证 通过token登录
+
+
+19. 模板方法模式
+实现方式：
+a)     父类模板类（规定要执行的方法和顺序，只关心方法的定义及顺序，不关心方法实现）
+b)     子类实现类（实现a规定要执行的方法，只关心方法实现，不关心调用顺序
+ 优点：
+     1）封装不变部分，扩展可变部分：把认为不变部分的算法封装到父类实现，可变部分则可以通过继承来实现，很容易扩展。
+     2）提取公共部分代码，便于维护。
+     3）行为由父类控制，由子类实现。
+ 缺点：
+     模板方法模式颠倒了我们平常的设计习惯：抽象类负责声明最抽象、最一般的事物属性和方法，实现类实现具体的事物属性和方法。在复杂的项目中可能会带来代码阅读的难度。
  
       
        
