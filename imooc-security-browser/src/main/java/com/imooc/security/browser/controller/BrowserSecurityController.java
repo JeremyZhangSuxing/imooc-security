@@ -1,7 +1,7 @@
 package com.imooc.security.browser.controller;
 
-import com.imooc.security.browser.support.SimpleResponse;
 import com.imooc.security.core.properties.SecurityProperties;
+import com.imooc.security.core.support.SimpleResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

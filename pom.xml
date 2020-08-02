@@ -108,6 +108,12 @@
                 <artifactId>commons-beanutils</artifactId>
                 <version>${commons-beanutils.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.imooc.security</groupId>
+                <artifactId>imooc-security-app</artifactId>
+                <version>${imooc.security.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

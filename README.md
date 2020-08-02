@@ -61,6 +61,15 @@ b)     子类实现类（实现a规定要执行的方法，只关心方法实现
  
       
        
+  oauth 协议 oauth 源码请求流程
+  
+  1. 使用用户密码的认证方式发起请求
+  2. 请求进入TokenEndpoint ---> 通过 clientDetailService 获取 clientDetails  ----> 创建一个 TokenRequest 
+     --->TokenGranter grant OAuth2AccessToken  (ComposeTokenGranter 里面回处理5种不同token grant实现，根据传入的 grant_type 来选择)
+  3.abstractTokenGranter  ---> getAccessToken (不同授权模式不同实现)
+  4.写入response
+  
+ 
   
 
 
