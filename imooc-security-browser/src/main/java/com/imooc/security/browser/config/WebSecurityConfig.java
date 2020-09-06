@@ -79,7 +79,7 @@ public class WebSecurityConfig extends AbstractChannelSecurityConfig {
                 .antMatchers("/authentication/require",
                         securityProperties.getBrowser().getLoginPage(),
                         "/error",
-                        "/code/*").permitAll()
+                        "/code/*","/file").permitAll()
                 .anyRequest()
                 .authenticated()
                 //去掉跨站防护
