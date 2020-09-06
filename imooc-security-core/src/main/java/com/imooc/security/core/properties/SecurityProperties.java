@@ -18,4 +18,8 @@ public class SecurityProperties {
      * 验证码相关配置
      */
     private ValidateCodeProperties code = new ValidateCodeProperties();
+    /**
+     * Oauth_token客户端配置
+     */
+    private OauthProperties oauthProperties = new OauthProperties();
 }
